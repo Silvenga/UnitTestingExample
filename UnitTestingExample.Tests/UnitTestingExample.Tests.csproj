@@ -74,8 +74,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExamples\E1_Facts_And_Theories.cs" />
+    <Compile Include="BaseExamples\E2_XUnit_Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TodoListMangerFacts.cs" />
+    <Compile Include="TodoExample\E4_AutoFixtures.cs" />
+    <Compile Include="TodoExample\E3_FluentAssertions.cs" />
+    <Compile Include="TodoExample\E5_NSubsitute.cs" />
+    <Compile Include="XUnitIntoFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -100,4 +105,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AssignLinkMetadata" Condition="'$(NCrunch)' == '1'">
+  </Target>
 </Project>

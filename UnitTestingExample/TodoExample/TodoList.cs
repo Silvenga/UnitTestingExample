@@ -1,4 +1,4 @@
-﻿namespace UnitTestingExample
+﻿namespace UnitTestingExample.TodoExample
 {
     using System.Collections.Generic;
 
