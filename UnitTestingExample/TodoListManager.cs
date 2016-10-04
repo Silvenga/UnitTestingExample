@@ -1,15 +1,19 @@
 ﻿namespace UnitTestingExample
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class TodoListManager
     {
-        private readonly INotificationManager _manager;
+        private readonly INotificationManager _notificationManager;
+        private readonly IRemoteApiManager _apiManager;
 
-        public TodoListManager(INotificationManager manager)
+        public TodoListManager(INotificationManager notificationManager, IRemoteApiManager apiManager)
         {
-            _manager = manager;
+            _notificationManager = notificationManager;
+            _apiManager = apiManager;
         }
 
         public void ChangeTitle(string title, TodoList todoList)
@@ -21,6 +25,11 @@
             if (todoList == null)
             {
                 throw new ArgumentNullException("todoList");
+            }
+
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("Title must have value.");
             }
 
             todoList.Title = title;
@@ -84,7 +93,43 @@
             }
 
             result.IsCompleted = true;
-            _manager.NotifyOfCompletedTask(result.Name);
+            _notificationManager.NotifyOfCompletedTask(result.Name);
+        }
+
+        public async Task CompleteItemAsync(Guid guid, TodoList todoList)
+        {
+            if (todoList == null)
+            {
+                throw new ArgumentNullException("todoList");
+            }
+
+            var result = todoList.Items.SingleOrDefault(x => x.Id == guid);
+            if (result == null)
+            {
+                throw new ArgumentException("Item does not exist in list.");
+            }
+
+            if (result.IsCompleted)
+            {
+                throw new ArgumentException("Item is already completed.");
+            }
+
+            result.IsCompleted = true;
+            await _notificationManager.NotifyOfCompletedTaskAsync(result.Name);
+        }
+
+        public void DownloadRemoteItems(TodoList todoList)
+        {
+            if (todoList == null)
+            {
+                throw new ArgumentNullException("todoList");
+            }
+
+            var items = _apiManager.GetRemoveItems(todoList.Title);
+            foreach (var item in items)
+            {
+                todoList.Items.Add(item);
+            }
         }
     }
 }

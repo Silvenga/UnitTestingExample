@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="NotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteApiManager.cs" />
     <Compile Include="TodoItem.cs" />
     <Compile Include="TodoList.cs" />
     <Compile Include="TodoListManager.cs" />
